@@ -6,7 +6,10 @@ import AnimeModal from "./components/AnimeModal";
 import Footer from "./components/Footer";
 import "./App.css";
 
-const API_BASE_URL = "http://localhost:3000/anime/hianime";
+// API base is loaded at runtime from /config.json to allow updating the
+// backend URL without rebuilding the frontend.
+
+const DEFAULT_API_BASE = "http://localhost:3000/anime/hianime";
 
 function App() {
   const [latestEpisodes, setLatestEpisodes] = useState([]);
@@ -23,18 +26,35 @@ function App() {
     search: false,
   });
 
+  // runtime API base loaded from /config.json
+  const [apiBase, setApiBase] = useState(DEFAULT_API_BASE);
+
   const ITEMS_PER_PAGE = 12; // عدد العناصر المعروضة في البداية
 
   useEffect(() => {
-    loadLatestEpisodes();
-    loadSeasonalAnime();
+    // Load runtime config then fetch data
+    (async () => {
+      let base = DEFAULT_API_BASE;
+      try {
+        const res = await fetch("/config.json");
+        if (res.ok) {
+          const cfg = await res.json();
+          if (cfg && cfg.API_BASE) base = cfg.API_BASE;
+        }
+      } catch (e) {
+        // ignore, will use default
+      }
+      setApiBase(base);
+      await loadLatestEpisodes(base);
+      await loadSeasonalAnime(base);
+    })();
   }, []);
 
-  const loadLatestEpisodes = async () => {
+  const loadLatestEpisodes = async (base = apiBase) => {
     try {
       console.log("Fetching latest episodes...");
       // Using 'recently-updated' from hianime
-      const response = await fetch(`${API_BASE_URL}/recently-updated?page=1`);
+      const response = await fetch(`${base}/recently-updated?page=1`);
       console.log("Response status:", response.status);
       if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
@@ -56,10 +76,10 @@ function App() {
     }
   };
 
-  const loadSeasonalAnime = async () => {
+  const loadSeasonalAnime = async (base = apiBase) => {
     try {
       // Using 'top-airing' as seasonal/popular proxy
-      const response = await fetch(`${API_BASE_URL}/top-airing?page=1`);
+      const response = await fetch(`${base}/top-airing?page=1`);
       if (!response.ok) throw new Error("Failed to fetch");
       const data = await response.json();
 
@@ -85,7 +105,7 @@ function App() {
     setLoading((prev) => ({ ...prev, search: true }));
     try {
       const response = await fetch(
-        `${API_BASE_URL}/${encodeURIComponent(searchTerm)}?page=1`
+        `${apiBase}/${encodeURIComponent(searchTerm)}?page=1`
       );
       if (!response.ok) throw new Error("Search failed");
       const data = await response.json();
@@ -114,7 +134,7 @@ function App() {
   const handleAnimeClick = async (animeId) => {
     try {
       // Fetch anime info (Consumet returns info + episodes in one call usually)
-      const infoResponse = await fetch(`${API_BASE_URL}/info?id=${animeId}`);
+      const infoResponse = await fetch(`${apiBase}/info?id=${animeId}`);
       if (!infoResponse.ok) throw new Error("Failed to fetch anime info");
       const animeInfo = await infoResponse.json();
 
