@@ -1,0 +1,139 @@
+:root {
+  --primary: #FF4757;
+  --primary-dark: #FF3838;
+  --secondary: #5F27CD;
+  --accent: #00D2D3;
+  --dark-bg: #0F0F1E;
+  --card-bg: #1A1A2E;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B8B8D1;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(255, 71, 87, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: 5rem 0;
+}
+
+.section-alt {
+  background: linear-gradient(180deg, var(--dark-bg) 0%, rgba(26, 26, 46, 0.5) 100%);
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-line {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  grid-column: 1 / -1;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.load-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+  font-family: 'Cairo', sans-serif;
+}
+
+.load-more-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5);
+  background: linear-gradient(135deg, #FF7B7B 0%, #FF5767 100%);
+}
+
+.load-more-btn:active {
+  transform: translateY(-1px);
+}
+
+.load-more-btn svg {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .load-more-btn {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+  }
+}
