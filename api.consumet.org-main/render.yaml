@@ -2,9 +2,13 @@ services:
   - type: web
     name: consumet-api # Name of the service
     env: docker
-    repo: https://github.com/consumet/api.consumet.org.git
-    plan: free
+    repo: https://github.com/minasamir1401/consumet-api.git
     branch: main
+    plan: free
+    rootDir: api.consumet.org-main
+    dockerfilePath: Dockerfile
     envVars:
       - key: PORT
         value: 3000
+      - key: NODE_ENV
+        value: production
